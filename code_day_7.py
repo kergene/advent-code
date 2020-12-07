@@ -23,7 +23,6 @@ def find_outer_bags(rules):
 
 def count_inner_bags(rules):
     known_inners = dict((outer_bag, 0) for outer_bag, inner_bags in rules.items() if not inner_bags)
-    print(known_inners)
     for bag in known_inners:
         rules.pop(bag)
     while "shiny gold" not in known_inners:
@@ -38,7 +37,5 @@ def count_inner_bags(rules):
 
 if __name__ == "__main__":
     rules = get_data()
-    for i in rules.items():
-        print(i)
     print(find_outer_bags(rules))
     print(count_inner_bags(rules))
