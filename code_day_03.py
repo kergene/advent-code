@@ -1,9 +1,10 @@
 from math import prod
 
-def get_data():
-    with open("input_day_3.txt") as f:
-        data = f.read()
-    data = data.splitlines()
+def get_data(day):
+    if day < 10:
+        day = '0'+str(day)
+    with open(f"input_day_{day}.txt") as f:
+        data = f.read().splitlines()
     return data
 
 def count_trees(data, right, down):
@@ -17,11 +18,19 @@ def count_trees(data, right, down):
         col = col % col_length
     return trees
 
-if __name__ == "__main__":
-    data = get_data()
-    tree_list = []
+def test_paths(data):
+    collisions = []
     steps = ((1,1), (3,1), (5,1), (7,1), (1,2))
     for right, down in steps:
-        tree_list.append(count_trees(data, right, down))
-    print(tree_list[1])
-    print(prod(tree_list))
+        collisions.append(count_trees(data, right, down))
+    return collisions
+
+def main():
+    day = 3
+    data = get_data(day)
+    collisions = test_paths(data)
+    print(collisions[1])
+    print(prod(collisions))
+
+if __name__ == "__main__":
+    main()

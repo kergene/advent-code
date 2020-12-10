@@ -1,7 +1,9 @@
 from itertools import combinations
 
-def get_data():
-    with open("input_day_9.txt") as f:
+def get_data(day):
+    if day < 10:
+        day = '0'+str(day)
+    with open(f"input_day_{day}.txt") as f:
         data = f.read().splitlines()
     data = [int(i) for i in data]
     return data
@@ -25,10 +27,13 @@ def find_continuous_sum(data, target):
             if sum(data[i:i + set_len]) == target:
                 return max(data[i:i + set_len]) + min(data[i:i + set_len])
         set_len += 1
-            
 
-if __name__ == "__main__":
-    data = get_data()
+def main():
+    day = 9
+    data = get_data(day)
     p1 = find_invalid(data)
     print(p1)
-    print(find_continuous_sum(data, p1))
+    print(find_continuous_sum(data, p1))     
+
+if __name__ == "__main__":
+    main()

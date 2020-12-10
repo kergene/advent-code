@@ -1,5 +1,7 @@
-def get_data():
-    with open("input_day_6.txt") as f:
+def get_data(day):
+    if day < 10:
+        day = '0'+str(day)
+    with open(f"input_day_{day}.txt") as f:
         data = f.read().split('\n\n')
     return data
 
@@ -15,7 +17,11 @@ def count_everyone(data):
         total += len(everyone)
     return total    
 
-if __name__ == "__main__":
-    data = get_data()
+def main():
+    day = 6
+    data = get_data(day)
     print(count_anyone(data))
     print(count_everyone(data))
+
+if __name__ == "__main__":
+    main()

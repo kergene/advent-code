@@ -1,5 +1,7 @@
-def get_data():
-    with open("input_day_8.txt") as f:
+def get_data(day):
+    if day < 10:
+        day = '0'+str(day)
+    with open(f"input_day_{day}.txt") as f:
         data = f.read().replace('+','').splitlines()
     data = [instruction.split() for instruction in data]
     return data
@@ -50,7 +52,11 @@ def de_corrupt(instructions):
         if acc != 'Failed':
             return acc
 
-if __name__ == "__main__":
-    instructions = get_data()
+def main():
+    day = 8
+    instructions = get_data(day)
     print(run_script(instructions))
     print(de_corrupt(instructions))
+
+if __name__ == "__main__":
+    main()

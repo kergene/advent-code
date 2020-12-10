@@ -1,5 +1,7 @@
-def get_data():
-    with open("input_day_7.txt") as f:
+def get_data(day):
+    if day < 10:
+        day = '0'+str(day)
+    with open(f"input_day_{day}.txt") as f:
         data = f.read().splitlines()
     data = dict(create_rule(rule) for rule in data)
     return data
@@ -35,7 +37,11 @@ def count_inner_bags(rules):
             rules.pop(outer_bag)
     return known_inners["shiny gold"]
 
-if __name__ == "__main__":
-    rules = get_data()
+def main():
+    day = 7
+    rules = get_data(day)
     print(find_outer_bags(rules))
     print(count_inner_bags(rules))
+
+if __name__ == "__main__":
+    main()

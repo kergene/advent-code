@@ -1,10 +1,11 @@
 import re
 from collections import defaultdict
 
-def get_data():
-    with open("input_day_4.txt") as f:
-        data = f.read()
-    data = data.split('\n\n')
+def get_data(day):
+    if day < 10:
+        day = '0'+str(day)
+    with open(f"input_day_{day}.txt") as f:
+        data = f.read().split('\n\n')
     return data
 
 def basic_validation(data):
@@ -63,9 +64,14 @@ def check_year(year, min_year, max_year):
     else:
         return False
 
-if __name__ == "__main__":
-    data = get_data()
+def main():
+    day = 4
+    data = get_data(day)
     n_basic = basic_validation(data)
     print(n_basic)
     n_complex = complex_validation(data)
     print(n_complex)
+
+
+if __name__ == "__main__":
+    main()
