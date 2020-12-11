@@ -26,6 +26,9 @@ def find_stability(data):
         data = new_data
     return sum(1 for row in data for element in row if element == '#')
 
+def take_step(data, n, m):
+    return [[replace_seat(x, y, data, n, m) for y in range(m)] for x in range(n)]
+
 def replace_seat(x, y, data, n, m):
     fulls = 0
     for dx, dy in DIRECTIONS:
@@ -39,9 +42,6 @@ def replace_seat(x, y, data, n, m):
         return 'L'
     else:
         return data[x][y]
-
-def take_step(data, n, m):
-    return [[replace_seat(x, y, data, n, m) for y in range(m)] for x in range(n)]
 
 def find_stability_long_see(data):
     n = len(data)
