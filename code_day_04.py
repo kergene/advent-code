@@ -13,7 +13,6 @@ def basic_validation(data):
                     {'eyr', 'hgt', 'hcl', 'byr', 'iyr', 'pid', 'ecl'}]
     data = [set(kv.split(':')[0] for kv in row.split()) in ALLOWED_SETS for row in data]
     return sum(data)
-    
 
 def complex_validation(data):
     data = [{kv.split(':')[0]:kv.split(':')[1] for kv in row.split()} for row in data]
@@ -71,7 +70,6 @@ def main():
     print(n_basic)
     n_complex = complex_validation(data)
     print(n_complex)
-
 
 if __name__ == "__main__":
     main()
