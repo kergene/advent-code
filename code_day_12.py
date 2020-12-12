@@ -14,23 +14,23 @@ def relocate(data):
     y = 0
     DIRS = ((1,0), (0, -1), (-1, 0), (0, 1))
     dirs_idx = 0
-    for i,j in data:
-        if i == 'N':
-            y += j
-        elif i == 'S':
-            y -= j
-        elif i == 'E':
-            x += j
-        elif i == 'W':
-            x -= j
-        elif i == 'F':
-            x += DIRS[dirs_idx][0] * j
-            y += DIRS[dirs_idx][1] * j
-        elif i == 'R':
-            dirs_idx += (j // 90)
+    for command, size in data:
+        if command == 'N':
+            y += size
+        elif command == 'S':
+            y -= size
+        elif command == 'E':
+            x += size
+        elif command == 'W':
+            x -= size
+        elif command == 'F':
+            x += DIRS[dirs_idx][0] * size
+            y += DIRS[dirs_idx][1] * size
+        elif command == 'R':
+            dirs_idx += (size // 90)
             dirs_idx = dirs_idx % 4
-        elif i == 'L':
-            dirs_idx -= (j // 90)
+        elif command == 'L':
+            dirs_idx -= (size // 90)
             dirs_idx = dirs_idx % 4
     return abs(x) + abs(y)
 
@@ -39,23 +39,23 @@ def waypoint_relocate(data):
     y_way = 1
     x = 0
     y = 0
-    for i,j in data:
-        if i == 'N':
-            y_way += j
-        elif i == 'S':
-            y_way -= j
-        elif i == 'E':
-            x_way += j
-        elif i == 'W':
-            x_way -= j
-        elif i == 'F':
-            x += j * x_way
-            y += j * y_way
-        elif i == 'R':
-            for _ in range((j // 90) % 4):
+    for command, size in data:
+        if command == 'N':
+            y_way += size
+        elif command == 'S':
+            y_way -= size
+        elif command == 'E':
+            x_way += size
+        elif command == 'W':
+            x_way -= size
+        elif command == 'F':
+            x += size * x_way
+            y += size * y_way
+        elif command == 'R':
+            for _ in range((size // 90) % 4):
                 x_way, y_way = y_way, -x_way
-        elif i == 'L':
-            for _ in range((j // 90) % 4):
+        elif command == 'L':
+            for _ in range((size // 90) % 4):
                 x_way, y_way = -y_way, x_way
     return abs(x) + abs(y)
 
