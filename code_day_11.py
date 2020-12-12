@@ -30,16 +30,23 @@ def take_step(data, n, m):
     return [[replace_seat(x, y, data, n, m) for y in range(m)] for x in range(n)]
 
 def replace_seat(x, y, data, n, m):
-    fulls = 0
-    for dx, dy in DIRECTIONS:
-        a,b = x+dx,y+dy
-        if 0 <= a < n and 0 <= b < m:
-            if data[a][b] == '#':
-                fulls += 1
-    if data[x][y] == 'L' and fulls == 0:
+    if data[x][y] == 'L':
+        for dx, dy in DIRECTIONS:
+            a,b = x+dx,y+dy
+            if 0 <= a < n and 0 <= b < m:
+                if data[a][b] == '#':
+                    return 'L'
         return '#'
-    elif data[x][y] == '#' and fulls >= 4:
-        return 'L'
+    elif data[x][y] == '#':
+        fulls = 0
+        for dx, dy in DIRECTIONS:
+            a,b = x+dx,y+dy
+            if 0 <= a < n and 0 <= b < m:
+                if data[a][b] == '#':
+                    fulls += 1
+                    if fulls >= 4:
+                        return 'L'
+        return '#'
     else:
         return data[x][y]
 
@@ -57,22 +64,35 @@ def take_step_long(data, n, m):
     return [[replace_seat_long(x, y, data, n, m) for y in range(m)] for x in range(n)]
 
 def replace_seat_long(x, y, data, n, m):
-    fulls = 0
-    for dx, dy in DIRECTIONS:
-        a,b=x,y
-        seat = False
-        while not seat:
-            a,b = a+dx,b+dy
-            seat = True
-            if 0<= a < n and 0 <= b < m:
-                if data[a][b] == '.':
-                    seat = False
-                elif data[a][b] == '#':
-                    fulls += 1
-    if data[x][y] == 'L' and fulls == 0:
+    if data[x][y] == 'L':
+        for dx, dy in DIRECTIONS:
+            a,b=x,y
+            seat = False
+            while not seat:
+                seat = True
+                a,b = a+dx,b+dy
+                if 0 <= a < n and 0 <= b < m:
+                    if data[a][b] == '.':
+                        seat = False
+                    elif data[a][b] == '#':
+                        return 'L'
         return '#'
-    elif data[x][y] == '#' and fulls >= 5:
-        return 'L'
+    elif data[x][y] == '#':
+        fulls = 0
+        for dx, dy in DIRECTIONS:
+            a,b=x,y
+            seat = False
+            while not seat:
+                seat = True
+                a,b = a+dx,b+dy
+                if 0 <= a < n and 0 <= b < m:
+                    if data[a][b] == '.':
+                        seat = False
+                    elif data[a][b] == '#':
+                        fulls += 1
+                        if fulls >= 5:
+                            return 'L'
+        return '#'
     else:
         return data[x][y]
 
