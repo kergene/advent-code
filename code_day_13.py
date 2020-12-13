@@ -14,29 +14,6 @@ def preprocess(timetable):
     timetable = [int(i) if i != 'x' else -1 for i in timetable]
     return timetable
 
-def bezout(a, b):
-    remainder = min(a, b)
-    gcd = max(a, b)
-    quotients = []
-    while remainder:
-        quotients.append(gcd // remainder)
-        gcd, remainder = remainder, gcd % remainder
-    quotients.pop()
-    if not quotients:
-        if a > b:
-            return b, 0, 1
-        else:
-            return a, 1, 0
-    else:
-        coef_1 = 1
-        coef_2 = -quotients.pop()
-        while quotients:
-            coef_1, coef_2 = coef_2, coef_1 - coef_2 * quotients.pop(),
-        if a > b:
-            return gcd, coef_1, coef_2
-        else:
-            return gcd, coef_2, coef_1
-
 def next_bus(data):
     time = data[0]
     buses = data[1]
@@ -51,15 +28,13 @@ def next_bus(data):
 
 def bus_schedule(data):
     buses = data[1]
-    buses = [(buses[i], (buses[i]  - i) % buses[i]) for i in range(len(buses)) if buses[i] != -1]
-    remainder = buses[0][1]
-    mod = buses[0][0]
-    for new_mod, new_remainder in buses[1:]:
-        coefs = bezout(mod, new_mod)
-        remainder = remainder * new_mod * coefs[2] + new_remainder * mod * coefs[1]
-        mod = mod * new_mod // coefs[0]
-        remainder = remainder % mod
-    return remainder
+    buses = [(buses[i], (- i) % buses[i]) for i in range(len(buses)) if buses[i] != -1]
+    N = prod(bus[0] for bus in buses)
+    total = 0
+    for mod, rem in buses:
+        b = N // mod
+        total += b * rem * pow(b, -1, mod)
+    return total % N
 
 def main():
     day = 13
