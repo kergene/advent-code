@@ -14,9 +14,8 @@ def value_bitmask(data):
         if line[0] == 'mask':
             mask = line[2]
         else:
-            # convert to binary and pad with zeros
-            value = bin(int(line[2]))[2:]
-            value = list(value.zfill(36))
+            value = int(line[2])
+            value = list(format(value, '036b'))
             for i in range(len(mask)):
                 if mask[i] == '1':
                     value[i] = '1'
@@ -36,9 +35,8 @@ def location_bitmask(data):
             mask = line[2]
         else:
             value = int(line[2])
-            # convert to binary and pad with zeros
-            location = bin(int(line[0][4:-1]))[2:]
-            location = list(location.zfill(36))
+            location = int(line[0][4:-1])
+            location = list(format(location, '036b'))
             floating_indices = []
             for i in range(len(mask)):
                 if mask[i] == '1':
