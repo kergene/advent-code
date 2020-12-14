@@ -1,23 +1,4 @@
-#import hashlib
-
-#from math import prod
-#from math import ceil
-
-#from sympy.ntheory.modular import crt
-#from sympy.ntheory import divisor_sigma
-
-#import re
-
-#from collections import defaultdict
-
 from itertools import product
-#from itertools import combinations
-#from itertools import permutations
-
-#from copy import deepcopy
-from time import perf_counter
-
-
 
 def get_data(day):
     if day < 10:
