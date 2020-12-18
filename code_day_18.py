@@ -5,21 +5,24 @@ def get_data(day):
         data = f.read().splitlines()
     return data
 
+def find_brackets(string):
+    start_idx = string.index('(')
+    count = 0
+    for i in range(start_idx, len(string)):
+        if string[i] == '(':
+            count += 1
+        elif string[i] == ')':
+            count -= 1
+            if count == 0:
+                end_idx = i
+                return start_idx, end_idx
+
 def ltr_eval(string):
     if '(' in string:
-        # find brackets
-        start_idx = string.index('(')
-        count = 0
-        for i in range(start_idx, len(string)):
-            if string[i] == '(':
-                count += 1
-            elif string[i] == ')':
-                count -= 1
-                if count == 0:
-                    end_idx = i
-                    return ltr_eval(string[:start_idx]
-                        + str(ltr_eval(string[start_idx + 1:end_idx]))
-                        + string[end_idx + 1:])
+        start_idx, end_idx = find_brackets(string)
+        return ltr_eval(string[:start_idx]
+            + str(ltr_eval(string[start_idx + 1:end_idx]))
+            + string[end_idx + 1:])
     else:
         line = string.split(' ', 3)
         if len(line) == 4:
@@ -32,19 +35,10 @@ def left_to_right(data):
 
 def switched_eval(string):
     if '(' in string:
-        # find first, outermost pair of brackets
-        start_idx = string.index('(')
-        count = 0
-        for i in range(start_idx, len(string)):
-            if string[i] == '(':
-                count += 1
-            elif string[i] == ')':
-                count -= 1
-                if count == 0:
-                    end_idx = i
-                    return switched_eval(string[:start_idx]
-                        + str(switched_eval(string[start_idx + 1:end_idx]))
-                        + string[end_idx + 1:])
+        start_idx, end_idx = find_brackets(string)
+        return switched_eval(string[:start_idx]
+            + str(switched_eval(string[start_idx + 1:end_idx]))
+            + string[end_idx + 1:])
     else:
         if '*' in string:
             idx = string.index('*')
