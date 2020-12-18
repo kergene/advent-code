@@ -28,10 +28,7 @@ def ltr_eval(string):
             return eval(string)
 
 def left_to_right(data):
-    tot = 0
-    for line in data:
-        tot += ltr_eval(line)
-    return tot
+    return sum(ltr_eval(line) for line in data)
 
 def switched_eval(string):
     if '(' in string:
@@ -56,10 +53,7 @@ def switched_eval(string):
             return eval(string)
 
 def switched(data):
-    tot = 0
-    for line in data:
-        tot += switched_eval(line)
-    return tot
+    return sum(switched_eval(line) for line in data)
 
 def main():
     day = 18
