@@ -6,19 +6,19 @@ def get_data(day):
     return [int(i) for i in data]
 
 
-class DoublyLinkedListNode(object):
+class DoublyLinkedLoopNode(object):
     def __init__(self, value):
         self.value =  value
         self.prev = None
         self.next = None
 
 
-class DoublyLinkedList(object):
+class DoublyLinkedLoop(object):
     def __init__(self):
         self.focus = None
 
     def add(self, value):
-        node = DoublyLinkedListNode(value)
+        node = DoublyLinkedLoopNode(value)
         if not self.focus:
             self.focus = node
             self.focus.prev = node
@@ -64,7 +64,7 @@ class DoublyLinkedList(object):
 class CupGame(object):
     def __init__(self, iterator):
         self.value_to_node = {}
-        self.dll = DoublyLinkedList()
+        self.dll = DoublyLinkedLoop()
         for value in iterator:
             node = self.dll.add(value)
             self.value_to_node[value] = node
@@ -123,8 +123,8 @@ def data_generator(data, max_value):
 
 
 def find_stars(data):
-    cups = CupGame(data_generator(data, 1000000))
-    for _ in range(10000000):
+    cups = CupGame(data_generator(data, 10 ** 6))
+    for _ in range(10 ** 7):
         cups.take_step()
     return cups.score()
 
