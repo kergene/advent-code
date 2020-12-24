@@ -1,6 +1,7 @@
 from collections import defaultdict
 from time import perf_counter
 
+
 def get_data(day):
     if day < 10:
         day = '0'+str(day)
@@ -8,8 +9,9 @@ def get_data(day):
         data = f.read().splitlines()
     return data
 
+
 def tile_floor(data):
-    flip_counter = defaultdict(int)
+    flipped = defaultdict(bool)
     for line in data:
         i = 0
         x = y = 0
@@ -29,9 +31,10 @@ def tile_floor(data):
                 else:
                     x -= 1
             i += 1
-        flip_counter[(x,y)] += 1
-    flipped_tiles = set(i for i in flip_counter if flip_counter[i] % 2)
+        flipped[(x,y)] = not flipped[(x,y)]
+    flipped_tiles = set(i for i in flipped if flipped[i])
     return len(flipped_tiles), flipped_tiles
+
 
 def take_step(flipped_tiles):
     DIRECTIONS = ((-1,1), (1,1),
@@ -46,10 +49,12 @@ def take_step(flipped_tiles):
             active[neigh] += 2
     return set(i for i in active if 3 <= active[i] <= 5)
 
+
 def living_art(flipped_tiles):
     for _ in range(100):
         flipped_tiles = take_step(flipped_tiles)
     return len(flipped_tiles)
+
 
 def main():
     day = 24
@@ -57,6 +62,7 @@ def main():
     tiles_count, flipped_tiles = tile_floor(data)
     print(tiles_count)
     print(living_art(flipped_tiles))
+
 
 if __name__ == "__main__":
     main()
