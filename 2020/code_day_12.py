@@ -1,13 +1,15 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     data = [preprocess(datum) for datum in data]
     return data
 
+
 def preprocess(datum):
     return datum[0], int(datum[1:])
+
 
 def relocate(data):
     x = 0
@@ -34,6 +36,7 @@ def relocate(data):
             dirs_idx = dirs_idx % 4
     return abs(x) + abs(y)
 
+
 def waypoint_relocate(data):
     x_way = 10
     y_way = 1
@@ -59,11 +62,13 @@ def waypoint_relocate(data):
                 x_way, y_way = -y_way, x_way
     return abs(x) + abs(y)
 
+
 def main():
-    day = 12
-    data = get_data(day)
+    year, day = 2020, 12
+    data = get_data(year, day)
     print(relocate(data))
     print(waypoint_relocate(data))
+
 
 if __name__ == "__main__":
     main()

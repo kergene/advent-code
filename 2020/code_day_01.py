@@ -1,11 +1,7 @@
-from itertools import combinations
-from math import prod
-
-
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     data = list(int(i) for i in data)
     return data
@@ -32,8 +28,8 @@ def find_n_sum(data, n, target=2020):
 
 
 def main():
-    day = 1
-    data = get_data(day)
+    year, day = 2020, 1
+    data = get_data(year, day)
     print(find_n_sum(data, 2)[0])
     print(find_n_sum(data, 3)[0])
 

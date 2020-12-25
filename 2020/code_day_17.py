@@ -1,12 +1,14 @@
 from itertools import product
 
-def get_data(day):
+
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     data = [list(datum) for datum in data]
     return data
+
 
 def conway_3d(data):
     iters = 6
@@ -49,6 +51,7 @@ def conway_3d(data):
                         new_grid[z][y][x] = '.'
         grid = new_grid
     return tot
+
 
 def conway_4d(data):
     iters = 6
@@ -98,20 +101,25 @@ def conway_4d(data):
         grid = new_grid
     return tot
 
+
 def copy_2d(grid):
     return [row.copy() for row in grid]
+
 
 def copy_3d(grid):
     return [[row.copy() for row in layer] for layer in grid]
 
+
 def copy_4d(grid):
     return [[[row.copy() for row in layer] for layer in multilayer] for multilayer in grid]
 
+
 def main():
-    day = 17
-    data = get_data(day)
+    year, day = 2020, 17
+    data = get_data(year, day)
     print(conway_3d(data))
     print(conway_4d(data))
+
 
 if __name__ == "__main__":
     main()

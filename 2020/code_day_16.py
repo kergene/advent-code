@@ -1,10 +1,11 @@
 from collections import defaultdict
 from math import prod
 
-def get_data(day):
+
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().split('\n\n')
     rules = data[0]
     rules = dict(preprocess_rule(datum) for datum in rules.splitlines())
@@ -14,6 +15,7 @@ def get_data(day):
     others = [preprocess_ticket(datum) for datum in others.splitlines()[1:]]
     return rules, me, others
 
+
 def preprocess_rule(datum):
     datum = datum.split(':')
     key = datum[0]
@@ -22,8 +24,10 @@ def preprocess_rule(datum):
     bounds = [int(i) for i in bounds]
     return key, bounds
 
+
 def preprocess_ticket(datum):
     return [int(i) for i in datum.split(',')]
+
 
 def remove_invalid(rules, me, others):
     total = 0
@@ -45,6 +49,7 @@ def remove_invalid(rules, me, others):
         if keep_ticket:
             keep.append(ticket)
     return total, keep
+
 
 def identity_fields(rules, me, others):
     n_tickets = len(others)
@@ -72,12 +77,14 @@ def identity_fields(rules, me, others):
     # return product of fields with 'departure' in
     return prod(me[column] for field, column in fixed_links.items() if 'departure' in field)
 
+
 def main():
-    day = 16
-    rules, me, others = get_data(day)
+    year, day = 2020, 16
+    rules, me, others = get_data(year, day)
     error_rate, others = remove_invalid(rules, me, others)
     print(error_rate)
     print(identity_fields(rules, me, others))
+
 
 if __name__ == "__main__":
     main()

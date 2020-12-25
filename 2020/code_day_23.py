@@ -1,7 +1,7 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read()
     return [int(i) for i in data]
 
@@ -130,8 +130,8 @@ def find_stars(data):
 
 
 def main():
-    day = 23
-    data = get_data(day)
+    year, day = 2020, 23
+    data = get_data(year, day)
     print(find_ordering(data))
     print(find_stars(data))
 

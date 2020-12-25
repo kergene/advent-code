@@ -1,10 +1,11 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().replace('+','').splitlines()
     data = [instruction.split() for instruction in data]
     return data
+
 
 def run_script(instructions):
     accumulator, row, seens = 0, 0, set()
@@ -21,6 +22,7 @@ def run_script(instructions):
             raise ValueError()
     return accumulator
 
+
 def test_fix(instructions):
     accumulator, row, seens = 0, 0, set()
     n = len(instructions)
@@ -36,8 +38,10 @@ def test_fix(instructions):
         elif instructions[row][0] == 'nop':
             row += 1
         else:
-            raise Error()
-    return 'Failed'
+            raise ValueError
+    else:
+        return 'Failed'
+
 
 def de_corrupt(instructions):
     for row in range(len(instructions)):
@@ -52,11 +56,13 @@ def de_corrupt(instructions):
         if acc != 'Failed':
             return acc
 
+
 def main():
-    day = 8
-    instructions = get_data(day)
+    year, day = 2020, 8
+    instructions = get_data(year, day)
     print(run_script(instructions))
     print(de_corrupt(instructions))
+
 
 if __name__ == "__main__":
     main()

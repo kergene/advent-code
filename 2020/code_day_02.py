@@ -1,9 +1,10 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     return data
+
 
 def check_password_1(text):
     rule, letter, word = text.split()
@@ -14,6 +15,7 @@ def check_password_1(text):
     else:
         return False
 
+
 def check_password_2(text):
     rule, letter, word = text.split()
     rule = list(map(int, rule.split('-')))
@@ -23,13 +25,15 @@ def check_password_2(text):
     else:
         return False
 
+
 def main():
-    day = 2
-    data = get_data(day)
+    year, day = 2020, 2
+    data = get_data(year, day)
     rule_1_truths = [check_password_1(i) for i in data]
     print(sum(rule_1_truths))
     rule_2_truths = [check_password_2(i) for i in data]
     print(sum(rule_2_truths))
+
 
 if __name__ == "__main__":
     main()

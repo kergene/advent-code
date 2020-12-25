@@ -1,11 +1,13 @@
 from itertools import product
 
-def get_data(day):
+
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     return data
+
 
 def value_bitmask(data):
     memory = dict()
@@ -25,6 +27,7 @@ def value_bitmask(data):
             location = line[0][4:-1]
             memory[location] = int(value, 2)
     return sum(memory.values())
+
 
 def location_bitmask(data):
     memory = dict()
@@ -51,11 +54,13 @@ def location_bitmask(data):
                 memory[int(floating_location, 2)] = value
     return sum(memory.values())
 
+
 def main():
-    day = 14
-    data = get_data(day)
+    year, day = 2020, 14
+    data = get_data(year, day)
     print(value_bitmask(data))
     print(location_bitmask(data))
+
 
 if __name__ == "__main__":
     main()

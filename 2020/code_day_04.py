@@ -1,12 +1,14 @@
 import re
 from collections import defaultdict
 
-def get_data(day):
+
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().split('\n\n')
     return data
+
 
 def basic_validation(data):
     ALLOWED_SETS = [{'eyr', 'hgt', 'cid', 'hcl', 'byr', 'iyr', 'pid', 'ecl'},
@@ -14,10 +16,12 @@ def basic_validation(data):
     data = [set(kv.split(':')[0] for kv in row.split()) in ALLOWED_SETS for row in data]
     return sum(data)
 
+
 def complex_validation(data):
     data = [{kv.split(':')[0]:kv.split(':')[1] for kv in row.split()} for row in data]
     data = [check_all(fields) for fields in data]
     return sum(data)
+
 
 def check_all(fields):
     fields = defaultdict(str, fields)
@@ -37,17 +41,21 @@ def check_all(fields):
         return False
     return True
 
+
 def ecl_check(color):
     ALLOWED_COLORS = {'amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'}
     return color in ALLOWED_COLORS
-   
+
+
 def pid_check(pid):
     match = re.match(r'^[0-9]{9}$', pid)
     return match != None
 
+
 def hcl_check(hcl):
     match = re.match(r'^#[0-9a-f]{6}$', hcl)
     return match != None
+
 
 def hgt_check(hgt):
     if hgt[-2:] == 'cm':
@@ -57,19 +65,22 @@ def hgt_check(hgt):
     else:
         return False
 
+
 def check_year(year, min_year, max_year):
     if len(year) == 4:
         return min_year <= int(year) <= max_year
     else:
         return False
 
+
 def main():
-    day = 4
-    data = get_data(day)
+    year, day = 2020, 4
+    data = get_data(year, day)
     n_basic = basic_validation(data)
     print(n_basic)
     n_complex = complex_validation(data)
     print(n_complex)
+
 
 if __name__ == "__main__":
     main()

@@ -1,10 +1,11 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     data = dict(create_rule(rule) for rule in data)
     return data
+
 
 def create_rule(rule):
     rule = rule.split(' bag')
@@ -12,6 +13,7 @@ def create_rule(rule):
     outer_bag = rule[0]
     inner_bags = dict((' '.join(bag.split()[-2:]),int(bag.split()[-3])) for bag in rule[1:] if "no other" not in bag)
     return outer_bag, inner_bags
+
 
 def find_outer_bags(rules):
     q, seens = set(("shiny gold",)), set()
@@ -22,6 +24,7 @@ def find_outer_bags(rules):
                 q.add(outer_bag)
                 seens.add(outer_bag)
     return len(seens)
+
 
 def count_inner_bags(rules):
     known_inners = dict((outer_bag, 0) for outer_bag, inner_bags in rules.items() if not inner_bags)
@@ -37,11 +40,13 @@ def count_inner_bags(rules):
             rules.pop(outer_bag)
     return known_inners["shiny gold"]
 
+
 def main():
-    day = 7
-    rules = get_data(day)
+    year, day = 2020, 7
+    rules = get_data(year, day)
     print(find_outer_bags(rules))
     print(count_inner_bags(rules))
+
 
 if __name__ == "__main__":
     main()

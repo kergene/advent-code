@@ -1,9 +1,10 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     return data
+
 
 def find_brackets(string):
     start_idx = string.index('(')
@@ -16,6 +17,7 @@ def find_brackets(string):
             if count == 0:
                 end_idx = i
                 return start_idx, end_idx
+
 
 def ltr_eval(string):
     if '(' in string:
@@ -30,8 +32,10 @@ def ltr_eval(string):
         else:
             return eval(string)
 
+
 def left_to_right(data):
     return sum(ltr_eval(line) for line in data)
+
 
 def switched_eval(string):
     if '(' in string:
@@ -46,14 +50,17 @@ def switched_eval(string):
         else:
             return eval(string)
 
+
 def switched(data):
     return sum(switched_eval(line) for line in data)
 
+
 def main():
-    day = 18
-    data = get_data(day)
+    year, day = 2020, 18
+    data = get_data(year, day)
     print(left_to_right(data))
     print(switched(data))
+
 
 if __name__ == "__main__":
     main()

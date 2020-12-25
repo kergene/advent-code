@@ -3,10 +3,10 @@ from collections import Counter
 from itertools import product
 from itertools import combinations
 
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().split('\n\n')
     # dictionary with tile_id: image
     data = dict(preprocess(datum) for datum in data)
@@ -252,8 +252,8 @@ def find_seamonsters(data, edges):
     return dark_count - n*15
 
 def main():
-    day = 20
-    data = get_data(day)
+    year, day = 2020, 20
+    data = get_data(year, day)
     ans, edges = find_corners(data)
     print(ans)
     print(find_seamonsters(data, edges))

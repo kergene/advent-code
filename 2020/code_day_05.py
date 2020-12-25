@@ -1,11 +1,13 @@
 from itertools import product
 
-def get_data(day):
+
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     return data
+
 
 def seat_id(string):
     REPLACE = {'F':'0',
@@ -16,9 +18,11 @@ def seat_id(string):
         string = string.replace(old, new)
     return int(string, 2)
 
+
 def check_cards(data):
     data = [seat_id(i) for i in data]
     return max(data)
+
 
 def find_card(data):
     A = 'FB'
@@ -31,11 +35,13 @@ def find_card(data):
         else:
             flag = 1
 
+
 def main():
-    day = 5
-    data = get_data(day)
+    year, day = 2020, 5
+    data = get_data(year, day)
     print(check_cards(data))
     print(find_card(data))
+
 
 if __name__ == "__main__":
     main()

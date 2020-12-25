@@ -1,9 +1,10 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     return data, preprocess(data)
+
 
 def preprocess(data):
     ALLERGENS = dict()
@@ -19,6 +20,7 @@ def preprocess(data):
                 ALLERGENS[i] = set(ingredients)
     return ALLERGENS
 
+
 def safe_ingredients(data, ALLERGENS):
     POTENTIAL_ALLERGEN_INGREDIENTS = set(i for ingredients in ALLERGENS.values() for i in ingredients)
     safe_counter = 0
@@ -28,6 +30,7 @@ def safe_ingredients(data, ALLERGENS):
             if i not in POTENTIAL_ALLERGEN_INGREDIENTS:
                 safe_counter += 1
     return safe_counter
+
 
 def cdil(data, ALLERGENS):
     # canonical dangerous ingredient list
@@ -45,11 +48,13 @@ def cdil(data, ALLERGENS):
     sorted_keys = sorted(FORCED_ALLERGENS.keys())    
     return ','.join([FORCED_ALLERGENS[key] for key in sorted_keys])
 
+
 def main():
-    day = 21
-    data, ALLERGENS = get_data(day)
+    year, day = 2020, 21
+    data, ALLERGENS = get_data(year, day)
     print(safe_ingredients(data, ALLERGENS))
     print(cdil(data, ALLERGENS))
+
 
 if __name__ == "__main__":
     main()

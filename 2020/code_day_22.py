@@ -1,13 +1,15 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().split('\n\n')
     data = [preprocess(datum) for datum in data]
     return data
 
+
 def preprocess(datum):
     return list(int(i) for i in datum.splitlines()[1:])
+
 
 def boring_combat(p1, p2):
     p1 = p1.copy()
@@ -23,15 +25,18 @@ def boring_combat(p1, p2):
             p2.append(p1_card)
     return p1, p2
 
+
 def score_combat(p1, p2):    
     if p1:
         return sum(mult*card for mult, card in zip(range(len(p1),0,-1), p1))
     else:
         return sum(mult*card for mult, card in zip(range(len(p2),0,-1), p2))
 
+
 def play_boring_combat(p1, p2):
     p1, p2 = boring_combat(p1, p2)
     return score_combat(p1, p2)
+
 
 def recursive_combat(p1, p2):
     p1 = p1.copy()
@@ -64,15 +69,18 @@ def recursive_combat(p1, p2):
                     p2.append(p1_card)
     return p1, p2
 
+
 def play_recursive_combat(p1, p2):
     p1, p2 = recursive_combat(p1, p2)
     return score_combat(p1, p2)
 
+
 def main():
-    day = 22
-    p1, p2 = get_data(day)
+    year, day = 2020, 22
+    p1, p2 = get_data(year, day)
     print(play_boring_combat(p1, p2))
     print(play_recursive_combat(p1, p2))
+
 
 if __name__ == "__main__":
     main()

@@ -2,10 +2,10 @@ from collections import defaultdict
 from time import perf_counter
 
 
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     return data
 
@@ -57,8 +57,8 @@ def living_art(flipped_tiles):
 
 
 def main():
-    day = 24
-    data = get_data(day)
+    year, day = 2020, 24
+    data = get_data(year, day)
     tiles_count, flipped_tiles = tile_floor(data)
     print(tiles_count)
     print(living_art(flipped_tiles))

@@ -1,15 +1,17 @@
 from collections import defaultdict
 from itertools import product
 
-def get_data(day):
+
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().split('\n\n')
     rules = dict(preprocess(datum) for datum in data[0].splitlines())
     messages = data[1].splitlines()
     inv_t_p, inv_nt_p, n_nt = cnf(rules)
     return inv_t_p, inv_nt_p, n_nt, messages
+
 
 def preprocess(datum):
     datum = datum.split(':')
@@ -22,6 +24,7 @@ def preprocess(datum):
         else:
             options.append([int(val) for val in choice.split()])
     return base, options
+
 
 def cnf(rules):
     # converts the grammar to CNF
@@ -54,6 +57,7 @@ def cnf(rules):
     inv_t_p, inv_nt_p = invert_rules(t_prods, nt_prods)
     return inv_t_p, inv_nt_p, n_nt
 
+
 def invert_rules(t_prods, nt_prods):
     # inverts rule dictionaries for performance
     inv_t_p = defaultdict(set)
@@ -65,6 +69,7 @@ def invert_rules(t_prods, nt_prods):
         for production in outputs:
             inv_nt[tuple(production)].add(nonterminal)
     return inv_t_p, inv_nt
+
 
 def cyk(string, inv_t, inv_nt):
     # runs CYK algorithm
@@ -83,11 +88,13 @@ def cyk(string, inv_t, inv_nt):
                         M[start][start + length].add(A)
     return 0 in M[0][-1]
 
+
 def easy_cnf(inv_t_p, inv_nt_p, messages):
     tot = 0
     for line in messages:
         tot += cyk(line, inv_t_p, inv_nt_p)
     return tot
+
 
 def add_nt_rules(inv_nt_p, n_nt, extra_nt_p):
     # adds slightly more complex rules to inverted cnf
@@ -101,6 +108,7 @@ def add_nt_rules(inv_nt_p, n_nt, extra_nt_p):
             inv_nt_p[tuple(production)].add(nonterminal)
     return inv_nt_p
 
+
 def harder_cnf(inv_t_p, inv_nt_p, n_nt, messages):
     extra_nt_p = dict()
     extra_nt_p[8] = [[42, 8]]
@@ -108,11 +116,13 @@ def harder_cnf(inv_t_p, inv_nt_p, n_nt, messages):
     inv_nt_p = add_nt_rules(inv_nt_p, n_nt, extra_nt_p)
     return easy_cnf(inv_t_p, inv_nt_p, messages)
 
+
 def main():
-    day = 19
-    inv_t_p, inv_nt_p, n_nt, messages = get_data(day)
+    year, day = 2020, 19
+    inv_t_p, inv_nt_p, n_nt, messages = get_data(year, day)
     print(easy_cnf(inv_t_p, inv_nt_p, messages))
     print(harder_cnf(inv_t_p, inv_nt_p, n_nt, messages))
+
 
 if __name__ == "__main__":
     main()

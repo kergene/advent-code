@@ -1,10 +1,11 @@
-def get_data(day):
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
-    with open(f"input_day_{day}.txt") as f:
+    with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().split(',')
     data = [int(datum) for datum in data]
     return data
+
 
 def find_nth_term(data, n):
     index_lookup = {}
@@ -22,11 +23,13 @@ def find_nth_term(data, n):
             last = next_term
     return last
 
+
 def main():
-    day = 15
-    data = get_data(day)
+    year, day = 2020, 15
+    data = get_data(year, day)
     print(find_nth_term(data, 2020))
     print(find_nth_term(data, 30000000))
+
 
 if __name__ == "__main__":
     main()
