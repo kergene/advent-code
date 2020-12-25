@@ -8,18 +8,15 @@ def get_data(day):
 
 
 def open_door(card_pub, door_pub):
-    MODULO = 20201227
+    MODULUS = 20201227
     value = 1
     subject = 7
     card_loop_size = 0
     while value != card_pub:
-        value = (value * subject) % MODULO
+        value = (value * subject) % MODULUS
         card_loop_size += 1
     subject = door_pub
-    value = 1
-    for _ in range(card_loop_size):
-        value = (value * subject) % MODULO
-    return value
+    return pow(subject, card_loop_size, MODULUS)
 
 
 def main():
