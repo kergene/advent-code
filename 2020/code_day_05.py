@@ -5,42 +5,38 @@ def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
     with open(f"{year}/input_day_{day}.txt") as f:
-        data = f.read().splitlines()
-    return data
+        data = f.read()
+    return preprocess(data)
 
 
-def seat_id(string):
+def preprocess(data):
     REPLACE = {'F':'0',
                'B':'1',
                'L':'0',
                'R':'1'}
     for old, new in REPLACE.items():
-        string = string.replace(old, new)
-    return int(string, 2)
+        data = data.replace(old, new)
+    return set(int(string, 2) for string in data.splitlines())
 
 
 def check_cards(data):
-    data = [seat_id(i) for i in data]
     return max(data)
 
 
-def find_card(data):
-    A = 'FB'
-    B = 'LR'
-    flag = 0
-    for lst in product(A, A, A, A, A, A, A, B, B, B):
-        if ''.join(lst) not in data:
-            if flag:
-                return seat_id(''.join(lst))
-        else:
-            flag = 1
+def find_card(data, max_seat):
+    seat_id = max_seat
+    while True:
+        if seat_id not in data:
+            return seat_id
+        seat_id -= 1
 
 
 def main():
     year, day = 2020, 5
     data = get_data(year, day)
-    print(check_cards(data))
-    print(find_card(data))
+    max_seat = check_cards(data)
+    print(max_seat)
+    print(find_card(data, max_seat))
 
 
 if __name__ == "__main__":
