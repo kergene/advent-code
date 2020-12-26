@@ -1,6 +1,3 @@
-from math import prod
-
-
 def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
@@ -14,22 +11,26 @@ def get_data(year, day):
 
 
 def find_gaps(data):
-    ones = sum(data[i+1] - data[i] == 1 for i in range(len(data) - 1))
-    threes = sum(data[i+1] - data[i] == 3 for i in range(len(data) - 1))
+    # note gaps are always of length 1 or 3
+    m = data[-1]
+    gaps = len(data) - 1
+    threes = (m - gaps) // 2
+    ones = gaps - threes
     return ones * threes
 
 
 def count_ways(data):
-    mults = []
-    last_three_idx = -1
-    for i in range(len(data) - 1):
-        if data[i+1] - data[i] == 3:
-            mults.append(three_term_fib(i - last_three_idx))
+    product = 1
+    last_three_idx = 0
+    for i in range(len(data)):
+        if data[i] - data[i-1] == 3:
+            product *= three_term_fib(i - last_three_idx)
             last_three_idx = i
-    return prod(mults)
+    return product
 
 
-def three_term_fib(n): # have n numbers, can go up by 1,2,3 numbers at time
+def three_term_fib(n):
+    # have n numbers, can go up by 1,2,3 numbers at time
     if n == 1: return 1
     if n == 2: return 1
     a, b, c = 0, 1, 1
