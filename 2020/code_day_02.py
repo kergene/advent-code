@@ -6,32 +6,30 @@ def get_data(year, day):
     return data
 
 
-def check_password_1(text):
+def process_string(text):
     rule, letter, word = text.split()
-    rule = list(map(int, rule.split('-')))
-    counter = word.count(letter[0])
-    if counter >= rule[0] and counter <= rule[1]:
-        return True
-    else:
-        return False
-
-
-def check_password_2(text):
-    rule, letter, word = text.split()
-    rule = list(map(int, rule.split('-')))
+    rule = [int(i) for i in rule.split('-')]
     letter = letter[0]
-    if (word[rule[0] - 1] == letter) != (word[rule[1] - 1] == letter):
-        return True
-    else:
-        return False
+    return rule, letter, word
+
+
+def check_password_counting(text):
+    rule, letter, word = process_string(text)
+    counter = word.count(letter)
+    return counter >= rule[0] and counter <= rule[1]
+
+
+def check_password_indexing(text):
+    rule, letter, word = process_string(text)
+    return (word[rule[0] - 1] == letter) ^ (word[rule[1] - 1] == letter)
 
 
 def main():
     year, day = 2020, 2
     data = get_data(year, day)
-    rule_1_truths = [check_password_1(i) for i in data]
+    rule_1_truths = [check_password_counting(i) for i in data]
     print(sum(rule_1_truths))
-    rule_2_truths = [check_password_2(i) for i in data]
+    rule_2_truths = [check_password_indexing(i) for i in data]
     print(sum(rule_2_truths))
 
 
