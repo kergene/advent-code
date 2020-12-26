@@ -15,7 +15,7 @@ def find_invalid(data):
         test = data[i]
         pre_set = data[i-25:i]
         flag = False
-        for i, j in combinations(pre_set,2):
+        for i, j in combinations(pre_set, 2):
             if i + j == test:
                 flag = True
                 break
@@ -30,7 +30,7 @@ def find_continuous_sum(data, target):
     while True:
         if total == target:
             # return min * max
-            subdata = data[min_idx:max_idx+1]
+            subdata = data[min_idx:max_idx + 1]
             return min(subdata) + max(subdata)
         elif total < target or max_idx - min_idx == 1:
             # add next element
@@ -47,7 +47,7 @@ def main():
     data = get_data(year, day)
     invalid = find_invalid(data)
     print(invalid)
-    print(find_continuous_sum(data, invalid))     
+    print(find_continuous_sum(data, invalid))
 
 
 if __name__ == "__main__":
