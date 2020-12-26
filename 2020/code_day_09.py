@@ -24,20 +24,30 @@ def find_invalid(data):
 
 
 def find_continuous_sum(data, target):
-    set_len = 2
+    min_idx = 0
+    max_idx = 1
+    total = data[0] + data[1]
     while True:
-        for i in range(len(data) - set_len + 1):
-            if sum(data[i:i + set_len]) == target:
-                return max(data[i:i + set_len]) + min(data[i:i + set_len])
-        set_len += 1
+        if total == target:
+            # return min * max
+            subdata = data[min_idx:max_idx+1]
+            return min(subdata) + max(subdata)
+        elif total < target or max_idx - min_idx == 1:
+            # add next element
+            max_idx += 1
+            total += data[max_idx]
+        else:
+            # remove first element
+            total -= data[min_idx]
+            min_idx += 1
 
 
 def main():
     year, day = 2020, 9
     data = get_data(year, day)
-    p1 = find_invalid(data)
-    print(p1)
-    print(find_continuous_sum(data, p1))     
+    invalid = find_invalid(data)
+    print(invalid)
+    print(find_continuous_sum(data, invalid))     
 
 
 if __name__ == "__main__":
