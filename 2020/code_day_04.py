@@ -11,7 +11,7 @@ def get_data(year, day):
 
 
 def basic_validation(data):
-    ALLOWED_SETS = [{'eyr', 'hgt', 'cid', 'hcl', 'byr', 'iyr', 'pid', 'ecl'},
+    ALLOWED_SETS = [{'eyr', 'hgt', 'hcl', 'byr', 'iyr', 'pid', 'ecl', 'cid'},
                     {'eyr', 'hgt', 'hcl', 'byr', 'iyr', 'pid', 'ecl'}]
     data = [set(kv.split(':')[0] for kv in row.split()) in ALLOWED_SETS for row in data]
     return sum(data)
@@ -67,7 +67,7 @@ def hgt_check(hgt):
 
 
 def check_year(year, min_year, max_year):
-    if len(year) == 4:
+    if year:
         return min_year <= int(year) <= max_year
     else:
         return False

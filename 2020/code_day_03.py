@@ -17,7 +17,7 @@ def count_trees(data, right, down):
         if data[row][col] == '#':
              trees += 1
         col += right
-        col = col % col_length
+        col %= col_length
     return trees
 
 
