@@ -1,3 +1,6 @@
+from collections import defaultdict
+
+
 def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
@@ -16,36 +19,42 @@ def create_rule(rule):
 
 
 def find_outer_bags(rules):
-    q, seens = set(("shiny gold",)), set()
+    reverse_rules = defaultdict(set)
+    for outer_bag, inner_bags in rules.items():
+        for bag in inner_bags:
+            reverse_rules[bag].add(outer_bag)
+    TARGET = "shiny gold"
+    q, seens = set((TARGET,)), set()
     while q:
         test_bag = q.pop()
-        for outer_bag, inner_bags in rules.items():
-            if test_bag in inner_bags and outer_bag not in seens:
+        for outer_bag in reverse_rules[test_bag]:
+            if outer_bag not in seens:
                 q.add(outer_bag)
                 seens.add(outer_bag)
     return len(seens)
 
 
-def count_inner_bags(rules):
-    known_inners = dict((outer_bag, 0) for outer_bag, inner_bags in rules.items() if not inner_bags)
-    for bag in known_inners:
-        rules.pop(bag)
-    while "shiny gold" not in known_inners:
-        rules_to_remove = []
-        for outer_bag, inner_bag_dict in rules.items():
-            if set(inner_bag_dict.keys()).issubset(known_inners.keys()):
-                known_inners[outer_bag] = sum(colour_count * (known_inners[bag_colour] + 1) for bag_colour, colour_count in inner_bag_dict.items())
-                rules_to_remove.append(outer_bag)
-        for outer_bag in rules_to_remove:
-            rules.pop(outer_bag)
-    return known_inners["shiny gold"]
+class Memoize:
+    def __init__(self, func):
+        self.func = func
+        self.memo = {}
+    
+    def __call__(self, bag, rules):
+        if bag not in self.memo:
+            self.memo[bag] = self.func(bag, rules)
+        return self.memo[bag]
+
+
+@Memoize
+def count_inner_bags_recursive(bag, rules):
+    return sum(colour_count * (count_inner_bags_recursive(inner_bag, rules) + 1) for inner_bag, colour_count in rules[bag].items())
 
 
 def main():
     year, day = 2020, 7
     rules = get_data(year, day)
     print(find_outer_bags(rules))
-    print(count_inner_bags(rules))
+    print(count_inner_bags_recursive('shiny gold', rules))
 
 
 if __name__ == "__main__":
