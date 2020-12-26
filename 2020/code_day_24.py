@@ -1,5 +1,4 @@
 from collections import defaultdict
-from time import perf_counter
 
 
 def get_data(year, day):

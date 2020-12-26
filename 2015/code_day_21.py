@@ -1,6 +1,5 @@
 from math import ceil
-from itertools import product
-from itertools import combinations
+from itertools import product, combinations
 
 
 def get_data(year, day):

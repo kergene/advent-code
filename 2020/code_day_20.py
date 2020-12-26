@@ -1,7 +1,7 @@
 from math import prod
 from collections import Counter
-from itertools import product
-from itertools import combinations
+from itertools import product, combinations
+
 
 def get_data(year, day):
     if day < 10:
@@ -12,11 +12,13 @@ def get_data(year, day):
     data = dict(preprocess(datum) for datum in data)
     return data
 
+
 def preprocess(datum):
     datum = datum.splitlines()
     tile_id = int(datum[0].split()[1][:-1])
     rest = datum[1:]
     return tile_id, rest
+
 
 def get_sides(tile_id, data):
     # returns set of sides of tile
@@ -34,6 +36,7 @@ def get_sides(tile_id, data):
     sides.add(right[::-1])
     return sides
 
+
 def find_corners(data):
     # part 1: returns product of corners
     edges = set()
@@ -46,9 +49,11 @@ def find_corners(data):
     firsts = [edge[0] for edge in edges]
     return prod(i[0] for i in Counter(firsts).most_common()[-4:]), edges
 
+
 def neighbours(tile_id, edges):
     # returns neighbours of a cell from edge list
     return [edge[1] for edge in edges if edge[0] == tile_id]
+
 
 def construct_grid(edges):
     # constructs grid of numbers (not needed for part 1)
@@ -92,6 +97,7 @@ def construct_grid(edges):
                     grid[i][j] = neighbour
     return grid
 
+
 def rotate_anti(tile_id, data):
     # rotates tile 90 degrees anticlockwise
     grid = data[tile_id]
@@ -100,9 +106,11 @@ def rotate_anti(tile_id, data):
         new_grid[i][j] = grid[j][9-i]
     data[tile_id] = [''.join(row) for row in new_grid]
 
+
 def flip(tile_id, data):
     # flips tile
     data[tile_id] = [''.join(row) for row in zip(*data[tile_id])]
+
 
 def construct_image(data, edges):
     # reconstruct image from mess of subimages
@@ -191,6 +199,7 @@ def construct_image(data, edges):
             image.append(''.join(image_row))
     return image
 
+
 def rotate_anti_image(image):
     # rotate image anticlockwise by 90 deg
     new_image = [['' for _ in range(96)] for _ in range(96)]
@@ -198,9 +207,11 @@ def rotate_anti_image(image):
         new_image[i][j] = image[j][95-i]
     return [''.join(row) for row in new_image]
 
+
 def flip_image(image):
     # flip whole image
     return [''.join(row) for row in zip(*image)]
+
 
 def count_seamonsters(seamonster, image):
     # counts seamonsters in image
@@ -218,6 +229,7 @@ def count_seamonsters(seamonster, image):
                 if all(row[dark] == '#' for dark in seamonster[2]):
                     n += 1
     return n
+
 
 def find_seamonsters(data, edges):
     # returns number of non-seamonster dark squares
@@ -251,12 +263,14 @@ def find_seamonsters(data, edges):
     dark_count = sum(pixel == '#' for row in image for pixel in row)
     return dark_count - n*15
 
+
 def main():
     year, day = 2020, 20
     data = get_data(year, day)
     ans, edges = find_corners(data)
     print(ans)
     print(find_seamonsters(data, edges))
+
 
 if __name__ == "__main__":
     main()

@@ -1,16 +1,17 @@
-def get_data(year, day): # this is not nice code
+def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
     with open(f"{year}/input_day_{day}.txt") as f:
         data = f.read().splitlines()
     data = dict(preprocess(datum) for datum in data)
-    spells = {'mm': [4, 0, 0,   0,  53, 1], # [damage, heal, armor, mana, cost, effect_length]
-              'dr': [2, 2, 0,   0,  73, 1], # largely hard coded rather than used
-              'sh': [0, 0, 7,   0, 113, 6],
-              'po': [3, 0, 0,   0, 173, 6],
-              're': [0, 0, 0, 101, 229, 5]
+    spells_cost = {
+        'mm':  53,
+        'dr':  73,
+        'sh': 113,
+        'po': 173,
+        're': 229
     }
-    return data, spells
+    return data, spells_cost
 
 
 def preprocess(datum):
@@ -18,22 +19,22 @@ def preprocess(datum):
     return datum[0], int(datum[1])
 
 
-def calculate_state(hist, boss, spells):
+def calculate_state(hist, boss, spells_cost):
     mana = 500
     hp = 50
     boss_hp = boss['Hit Points']
     damage = boss['Damage']
-    mana_spent = sum(spells[spell][4] for spell in hist)
-    mana_regained, recharge_available = calculate_mana_regained(hist, spells)
+    mana_spent = sum(spells_cost[spell] for spell in hist)
+    mana_regained, recharge_available = calculate_mana_regained(hist, spells_cost)
     mana += mana_regained - mana_spent
-    hp_lost, shield_available = calculate_hp_lost(hist, spells, damage)
+    hp_lost, shield_available = calculate_hp_lost(hist, spells_cost, damage)
     hp -= hp_lost
-    boss_hp_lost, poison_available = calculate_boss_hp_lost(hist, spells)
+    boss_hp_lost, poison_available = calculate_boss_hp_lost(hist, spells_cost)
     boss_hp -= boss_hp_lost
     return mana, mana_spent, hp, boss_hp, shield_available, poison_available, recharge_available
 
 
-def calculate_mana_regained(hist, spells):
+def calculate_mana_regained(hist, spells_cost):
     mana_regained = 5 * 101 * hist[:-2].count('re')
     recharge_available = True
     try:
@@ -51,7 +52,7 @@ def calculate_mana_regained(hist, spells):
     return mana_regained, recharge_available
 
 
-def calculate_hp_lost(hist, spells, damage):
+def calculate_hp_lost(hist, spells_cost, damage):
     hp_lost = damage * len(hist)
     hp_lost -= 2 * hist.count('dr')
     hp_lost -= 3 * max(damage - 1, 7) * hist[:-2].count('sh')
@@ -71,7 +72,7 @@ def calculate_hp_lost(hist, spells, damage):
     return hp_lost, shield_available
 
 
-def calculate_boss_hp_lost(hist, spells):
+def calculate_boss_hp_lost(hist, spells_cost):
     boss_hp_lost = 4 * hist.count('mm')
     boss_hp_lost += 2 * hist.count('dr')
     boss_hp_lost += 6 * 3 * hist[:-2].count('po')
@@ -104,14 +105,14 @@ def get_next(last_attempt, shield_available, poison_available, recharge_availabl
     return next_attempt
 
 
-def min_mana(boss, spells, hard=False):
-    min_mana = 25*max(spells[spell][4] for spell in spells)
+def min_mana(boss, spells_cost, hard=False):
+    min_mana = 25*max(spells_cost[spell] for spell in spells_cost)
     starters = ['mm', 'dr', 'sh', 'po', 're']
     for i in starters:
         hist = [i]
         last_attempt = None
         while hist:
-            mana, mana_spent, hp, boss_hp, shield_available, poison_available, recharge_available = calculate_state(hist, boss, spells)
+            mana, mana_spent, hp, boss_hp, shield_available, poison_available, recharge_available = calculate_state(hist, boss, spells_cost)
             if hard:
                 hp -= len(hist)
             if mana_spent >= min_mana or hp <= 0:
@@ -142,8 +143,7 @@ def min_mana(boss, spells, hard=False):
                 else:
                     hist.append(next_element)
                     last_attempt = None
-                    # TODO check to make sure not too expensive + add cost of new thing to spent
-                    new_cost = spells[next_element][4]
+                    new_cost = spells_cost[next_element]
                     if new_cost > mana:
                         # too expensive--undo (but rest also too expensive)
                         hist.pop()
@@ -171,9 +171,9 @@ def min_mana(boss, spells, hard=False):
 
 def main():
     year, day = 2015, 22
-    boss, spells = get_data(year, day)
-    print(min_mana(boss, spells))
-    print(min_mana(boss, spells, hard=True))
+    boss, spells_cost = get_data(year, day)
+    print(min_mana(boss, spells_cost))
+    print(min_mana(boss, spells_cost, hard=True))
 
 
 if __name__ == "__main__":
