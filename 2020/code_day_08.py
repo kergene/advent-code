@@ -8,9 +8,9 @@ def get_data(year, day):
 
 
 def run_script(instructions):
-    accumulator, row, seens = 0, 0, set()
+    accumulator, row, seens = 0, 0, {}
     while row not in seens:
-        seens.add(row)
+        seens[row] = accumulator
         if instructions[row][0] == 'acc':
             accumulator += int(instructions[row][1])
             row += 1
@@ -20,15 +20,15 @@ def run_script(instructions):
             row += 1
         else:
             raise ValueError()
-    return accumulator
+    return accumulator, seens
 
 
-def test_fix(instructions):
-    accumulator, row, seens = 0, 0, set()
+def test_fix(instructions, row, accumulator, seens):
+    seens.remove(row)
     n = len(instructions)
     while row not in seens:
         if row == n:
-            return accumulator
+            return accumulator, seens
         seens.add(row)
         if instructions[row][0] == 'acc':
             accumulator += int(instructions[row][1])
@@ -40,18 +40,19 @@ def test_fix(instructions):
         else:
             raise ValueError
     else:
-        return 'Failed'
+        return 'Failed', seens
 
 
-def de_corrupt(instructions):
-    for row in range(len(instructions)):
+def de_corrupt(instructions, seens):
+    ever_seen = set(seens.keys())
+    for row in seens:
         if instructions[row][0] == 'jmp':
             instructions[row][0] = 'nop'
-            acc = test_fix(instructions)
+            acc, ever_seen = test_fix(instructions, row, seens[row], ever_seen)
             instructions[row][0] = 'jmp'
         elif instructions[row][0] == 'nop':
             instructions[row][0] = 'jmp'
-            acc = test_fix(instructions)
+            acc, ever_seen = test_fix(instructions, row, seens[row], ever_seen)
             instructions[row][0] = 'nop'
         if acc != 'Failed':
             return acc
@@ -60,8 +61,9 @@ def de_corrupt(instructions):
 def main():
     year, day = 2020, 8
     instructions = get_data(year, day)
-    print(run_script(instructions))
-    print(de_corrupt(instructions))
+    accumulator, seens = run_script(instructions)
+    print(accumulator)
+    print(de_corrupt(instructions, seens))
 
 
 if __name__ == "__main__":
