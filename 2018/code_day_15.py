@@ -1,13 +1,6 @@
 from heapdict import heapdict
 from itertools import count
 
-'''
-187488 too lo for P1
-189216 too hi for P1
-188576 answer for P1
- 24479 too lo for P2
- 57112 answer for P2
-'''
 
 def get_data(year, day):
     if day < 10:
@@ -145,7 +138,7 @@ class Game:
             if potential_target.loc in neighbours:
                 targets.add(potential_target)
         if targets:
-            target = min(targets, key=lambda x: x.hp)
+            target = min(targets, key=lambda x: (x.hp, x.loc))
             target.hp -= unit.power
             if target.hp <= 0:
                 target.hp = 0
@@ -267,7 +260,7 @@ class NoElfDeaths:
             if potential_target.loc in neighbours:
                 targets.add(potential_target)
         if targets:
-            target = min(targets, key=lambda x: x.hp)
+            target = min(targets, key=lambda x: (x.hp, x.loc))
             target.hp -= unit.power
             if target.hp <= 0:
                 target.hp = 0
@@ -281,20 +274,18 @@ class NoElfDeaths:
                 target.loc = (-1, -1)
 
 
-
-def part_1(data):
+def outnumbered(data):
     data = [row.copy() for row in data]
     game = Game(data)
     return game.run_game()
 
 
-def part_2(data):
+def overpower(data):
     for n in count(4):
         new_data = [row.copy() for row in data]
         no_deaths_game = NoElfDeaths(new_data, n)
         try:
             return no_deaths_game.run_game()
-            1
         except ElfDeathError:
             continue
 
@@ -302,8 +293,8 @@ def part_2(data):
 def main():
     year, day = 2018, 15
     data = get_data(year, day)
-    print(part_1(data))
-    print(part_2(data))
+    print(outnumbered(data))
+    print(overpower(data))
 
 
 if __name__ == "__main__":
