@@ -40,7 +40,7 @@ def knot_hash(data):
         for val in contents[idx * 16 + 1:idx * 16 + 16]:
             xor ^= val
         dense.append(xor)
-    return ''.join([format(val, 'x') for val in dense])
+    return ''.join([format(val, 'x').zfill(2) for val in dense])
 
 
 def main():
