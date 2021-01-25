@@ -1,40 +1,3 @@
-#import hashlib
-
-#from math import prod
-#from math import ceil
-#from math import gcd
-
-#from numpy import base_repr
-#import numpy as np
-
-#from sympy.ntheory.modular import crt
-#from sympy.ntheory import divisor_sigma
-
-#import re
-
-#from collections import defaultdict
-#from collections import Counter
-
-#from heapdict import heapdict
-
-#from queue import SimpleQueue
-#from queue import LifoQueue
-#from queue import Empty
-
-#from itertools import product
-#from itertools import combinations
-#from itertools import permutations
-#from itertools import accumulate
-#from itertools import count
-
-#from copy import deepcopy
-
-#import sys
-
-'''
-673 too hi for P1
-618 answer for P1
-'''
 def get_data(year, day):
     if day < 10:
         day = '0'+str(day)
@@ -45,7 +8,6 @@ def get_data(year, day):
     samples = [preprocess_sample(sample) for sample in samples]
     program = program.splitlines()
     program = [preprocess_program(line) for line in program]
-
     return samples, program
 
 
