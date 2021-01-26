@@ -1,35 +1,4 @@
-#import hashlib
-
-#from math import prod
-#from math import ceil
-#from math import gcd
-
-#from numpy import base_repr
-#import numpy as np
-
-#from sympy.ntheory.modular import crt
-#from sympy.ntheory import divisor_sigma
-
-#import re
-
 from collections import defaultdict
-#from collections import Counter
-
-#from heapdict import heapdict
-
-#from queue import SimpleQueue
-#from queue import LifoQueue
-#from queue import Empty
-
-#from itertools import product
-#from itertools import combinations
-#from itertools import permutations
-#from itertools import accumulate
-#from itertools import count
-
-#from copy import deepcopy
-
-#import sys
 
 
 def get_data(year, day):
@@ -82,14 +51,13 @@ class Particle:
         return self.idx
 
 
-def part_1(data):
+def closest_particle(data):
     # long term is min acceleration
     # ties broken by min velocity (once signs all match)
     # no more ties in this case
-    ORIGIN = (0, 0, 0)
     n = len(data)
-    min_acc = min(manhattan_distance(ORIGIN, data[idx]['a']) for idx in range(n))
-    possibles = [idx for idx in range(n) if manhattan_distance(ORIGIN, data[idx]['a']) == min_acc]
+    min_acc = min(manhattan_zero(data[idx]['a']) for idx in range(n))
+    possibles = [idx for idx in range(n) if manhattan_zero(data[idx]['a']) == min_acc]
     if len(possibles) == 1:
         return possibles[0]
     else:
@@ -97,8 +65,8 @@ def part_1(data):
         while not all(particle.increasing() for particle in particles):
             for particle in particles:
                 particle.update()
-        min_vel = min(manhattan_distance(ORIGIN, particle.vel) for particle in particles)
-        particles = [particle for particle in particles if manhattan_distance(ORIGIN, particle.vel) == min_vel]
+        min_vel = min(manhattan_zero(particle.vel) for particle in particles)
+        particles = [particle for particle in particles if manhattan_zero(particle.vel) == min_vel]
         if len(particles) == 1:
             return particles[0].idx
         else:
@@ -114,7 +82,7 @@ def manhattan_zero(a):
     return manhattan_distance(a, ORIGIN)
 
 
-def part_2(data):
+def collision_removal(data):
     # we stop when no change in number of particles for 50 steps
     # (not guaranteed to reach solution, but works for input)
     n = len(data)
@@ -149,8 +117,8 @@ def pos_check(particles):
 def main():
     year, day = 2017, 20
     data = get_data(year, day)
-    print(part_1(data))
-    print(part_2(data))
+    print(closest_particle(data))
+    print(collision_removal(data))
 
 
 if __name__ == "__main__":
