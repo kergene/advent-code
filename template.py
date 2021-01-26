@@ -62,7 +62,7 @@ def part_2(data):
 
 
 def main():
-    year, day = 2018, 0
+    year, day = 2017, 0
     data = get_data(year, day)
     print(data)
     print(part_1(data))
