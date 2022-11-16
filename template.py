@@ -74,7 +74,7 @@ def part_2(data):
 
 
 def main():
-    year, day = 2021, 0
+    year, day = 2022, 0
     data = get_data(year, day)
     print(data)
     print(part_1(data))

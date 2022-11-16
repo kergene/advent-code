@@ -11,4 +11,7 @@ I didn't do these live, and instead completed these in late 2020 and early 2021.
 On Day 9 and from Day 11 onwards, I attempted to place on the daily leaderboard by being within the first 100 solvers. I scored a total of 26 points, placing tied 700th overall.
 
 ## 2021
-Currently attempting to place on the daily leaderboard.
+I did most of this year on the day, but only attempted to place on the daily leaderboard on Day 1, Day 2, and Day 7.
+
+## 2022
+I intend to attempt to place on the daily leaderboard on some days around the start of December.
