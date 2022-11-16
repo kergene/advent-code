@@ -2,6 +2,7 @@
 
 #from math import prod
 #from math import ceil
+#from math import floor
 #from math import gcd
 
 #from numpy import base_repr
@@ -31,6 +32,16 @@
 #from copy import deepcopy
 
 #import sys
+
+# class Memoize:
+#     def __init__(self, func):
+#         self.func = func
+#         self.memo = {}
+#
+#     def __call__(self, state):
+#         if state not in self.memo:
+#             self.memo[state] = self.func(state)
+#         return self.memo[state]
 
 
 def get_data(year, day):
