@@ -1,3 +1,9 @@
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent.parent))
+import import_data
+
 #import hashlib
 
 #from math import prod
@@ -31,8 +37,6 @@
 
 #from copy import deepcopy
 
-#import sys
-
 # class Memoize:
 #     def __init__(self, func):
 #         self.func = func
@@ -45,10 +49,9 @@
 
 
 def get_data(year, day):
-    if day < 10:
-        day = '0'+str(day)
-    with open(f"{year}/input_day_{day}.txt") as f:
-        data = f.read().splitlines()
+    input_path = str(Path(__file__).parent.parent / f"{year}/input_day_{day}.txt")
+    with open(input_path) as input_file:
+        data = input_file.read().splitlines()
     data = [preprocess(datum) for datum in data]
     return data
 
@@ -62,19 +65,27 @@ def preprocess(datum):
 
 
 def part_1(data):
-    return
+    total = 0
+    for idx, row in enumerate(data):
+        pass
+    return total
 
 
 
 
 def part_2(data):
-    return
+    total = 0
+    for idx, row in enumerate(data):
+        pass
+    return total
 
 
 
 
 def main():
-    year, day = 2022, 0
+    file_string = str(Path(__file__))
+    year, day = import_data.get_year_day(file_string)
+    import_data.import_data(year, day)
     data = get_data(year, day)
     print(data)
     print(part_1(data))
