@@ -24,7 +24,10 @@ def get_input(year, day):
     with open(str(Path(__file__).parent / ".aocrc")) as cookie_file:
         aoc_cookie = cookie_file.read().strip()
     req = requests.get(f'https://adventofcode.com/{year}/day/{int(day)}/input',
-                       headers={'cookie':'session='+aoc_cookie})
+                       headers={
+                        'cookie':'session='+aoc_cookie,
+                        'User-Agent':'github.com/kergene/advent-code by doable-courage0r@icloud.com'
+                       })
     return req.text
 
 
