@@ -30,6 +30,7 @@ def evaluate_snailfish(datum, index):
             return snailfish_number, index
         else:
             snailfish_number.append(int(character))
+    assert False
 
 
 class Regular:
@@ -49,22 +50,22 @@ class Node:
         self.depth = depth
         self.parent = parent
         self.side = side
-        if type(left) == list:
+        if isinstance(left, list):
             self.left = Node(left[0], left[1], self.depth + 1, self, 'L')
         else:
             self.left = left
-        if type(right) == list:
+        if isinstance(right, list):
             self.right = Node(right[0], right[1], self.depth + 1, self, 'R')
         else:
             self.right = right
 
     def Regularize(self, last_reg):
-        if type(self.left) == int:
+        if isinstance(self.left, int):
             self.left = Regular(self.left, last_reg, None, self)
             last_reg = self.left
         else:
             last_reg = self.left.Regularize(last_reg)
-        if type(self.right) == int:
+        if isinstance(self.right, int):
             self.right = Regular(self.right, last_reg, None, self)
             last_reg = self.right
         else:
@@ -80,10 +81,10 @@ class Node:
         self.parent = new_node
         other.parent = new_node
         next_right = self.right
-        while type(next_right) != Regular:
+        while not isinstance(next_right, Regular):
             next_right = next_right.right
         next_left = other.left
-        while type(next_left) != Regular:
+        while not isinstance(next_left, Regular):
             next_left = next_left.left
         next_left.left = next_right
         next_right.right = next_left
@@ -91,9 +92,9 @@ class Node:
 
     def increase_depth(self):
         self.depth += 1
-        if type(self.left) != Regular:
+        if not isinstance(self.left, Regular):
             self.left.increase_depth()
-        if type(self.right) != Regular:
+        if not isinstance(self.right, Regular):
             self.right.increase_depth()
 
     def explode(self):
@@ -110,18 +111,18 @@ class Node:
                 assert False
             return True
         else:
-            if type(self.left) != Regular:
+            if not isinstance(self.left, Regular):
                 try_explode = self.left.explode()
                 if try_explode:
                     return True
-            if type(self.right) != Regular:
+            if not isinstance(self.right, Regular):
                 try_explode = self.right.explode()
                 if try_explode:
                     return True
         return False
 
     def split(self):
-        if type(self.left) == Regular:
+        if isinstance(self.left, Regular):
             if self.left.value >= 10:
                 l, r = floor(self.left.value / 2), ceil(self.left.value / 2)
                 l_reg = Regular(l, self.left.left, None, self)
@@ -132,7 +133,7 @@ class Node:
             try_split = self.left.split()
             if try_split:
                 return True
-        if type(self.right) == Regular:
+        if isinstance(self.right, Regular):
             if self.right.value >= 10:
                 l, r = floor(self.right.value / 2), ceil(self.right.value / 2)
                 l_reg = Regular(l, self.right.left, None, self)
@@ -146,11 +147,11 @@ class Node:
         return False
 
     def magnitude(self):
-        if type(self.left) == Regular:
+        if isinstance(self.left, Regular):
             left_score = self.left.value
         else:
             left_score = self.left.magnitude()
-        if type(self.right) == Regular:
+        if isinstance(self.right, Regular):
             right_score = self.right.value
         else:
             right_score = self.right.magnitude()

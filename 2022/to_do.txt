@@ -1,0 +1,2 @@
+Day 19: Speed this up slightly? Look into using Hadi's suggestion and either dfs or a heap
+Day 19: Hadi's suggestion about jumping forward in time to a point where we can get each bot

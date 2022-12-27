@@ -37,15 +37,22 @@ import import_data
 
 #from copy import deepcopy
 
+# from functools import cmp_to_key
+
 # class Memoize:
 #     def __init__(self, func):
 #         self.func = func
 #         self.memo = {}
 #
-#     def __call__(self, state):
+#     def __call__(self, state, data):
 #         if state not in self.memo:
-#             self.memo[state] = self.func(state)
+#             self.memo[state] = self.func(state, data)
 #         return self.memo[state]
+#
+#     def clear(self):
+#         self.memo.clear()
+
+#sign = lambda x: (x > 0) - (x < 0)
 
 
 def get_data(year, day):

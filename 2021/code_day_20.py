@@ -44,9 +44,9 @@ def enhance(instructions, image, times):
                 new_image_dict[r, c] = instructions[idx]
         image_dict = new_image_dict
     grid = []
-    for r in range(- step - 2, r_max + step + 2):
+    for r in range(- times - 2, r_max + times + 2):
         row = []
-        for c in range(- step - 2, c_max + step + 2):
+        for c in range(- times - 2, c_max + times + 2):
             row.append('#' if image_dict[r, c] == '1' else '.')
         grid.append(''.join(row))
     return sum(int(val) for val in image_dict.values())

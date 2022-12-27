@@ -7,7 +7,6 @@ DAYS = tuple(['0'+str(day_ex) for day_ex in range(1,10)] + [str(day_ex) for day_
 
 def import_data(year, day):
     input_path = str(Path(__file__).parent / f"{year}/input_day_{day}.txt")
-    print(input_path)
     if os.path.isfile(input_path):
         pass
     else:
@@ -15,6 +14,7 @@ def import_data(year, day):
             raise ValueError('Invalid year input')
         if day not in DAYS:
             raise ValueError('Invalid day input')
+        print('Getting input and writing to: ', input_path)
         input_text = get_input(year, day)
         with open(input_path, "w") as input_file:
             input_file.write(input_text)
